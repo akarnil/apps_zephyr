@@ -9,6 +9,8 @@ manifest:
       url-base: https://github.com/nxp-upstream
     - name: nxp-mcuxpresso
       url-base: https://github.com/nxp-mcuxpresso
+    - name: iotconnect
+      url-base: https://github.com/avnet-iotconnect
   projects:
     - name: zephyr
       remote: nxp-upstream
@@ -31,5 +33,15 @@ manifest:
       remote: nxp-mcuxpresso
       revision: MCUX_2.16.000
       path: modules/lib/tflite-micro
+
+    - name: iotc-c-lib
+      remote: iotconnect
+      revision: 550e078250c034974beec7ab4cbb30f18f40358a
+      submodules: true
+
+    # - name: iotc-generic-c-sdk
+    #   remote: iotconnect
+    #   revision: 1666f6a352aab604f6c5a888c94de17e800d1aed
+
   self:
     path: nxp
