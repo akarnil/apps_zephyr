@@ -80,6 +80,13 @@
 		zephyr,memory-region = "SRAM1";
 		zephyr,memory-attr = <( DT_MEM_ARM(ATTR_MPU_RAM) )>;
 	};
+	sram1: memory@30000000 {
+		compatible = "mmio-sram";
+		reg = < 0x30000000 DT_SIZE_K(408) >;
+		compatible = "zephyr,memory-region", "mmio-sram";
+		zephyr,memory-region = "RAM1";
+		zephyr,memory-attr = <( DT_MEM_ARM(ATTR_MPU_RAM) )>;
+	};
 };
 
 /* Rotate the display to portrait mode */

@@ -81,3 +81,5 @@ list(APPEND app_sources ${cjson_sources})
 target_compile_definitions(app PRIVATE TF_LITE_STATIC_MEMORY)
 target_compile_options(app PRIVATE -Wno-psabi)
 target_sources(app PRIVATE ${app_sources})
+
+zephyr_code_relocate(FILES ${app_sources} LOCATION RAM1)
