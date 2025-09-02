@@ -17,6 +17,56 @@
 	};
 };
 
+#if 1
+
+/* Moved SJ16 and SJ26 jumpers from default connection, soldered wire to P1_4 to left side of R58 resistor */
+/* Move I2c pins from P3_2, P3_3 to P3_8, P3_7
+/* Move Camera  P1_4, P1_5, P1_6, P1_7 to P3_0, P3_1, P3_2, P3_3 */
+
+&pinctrl {
+
+	pinmux_flexcomm7_lpi2c: pimux_flexcomm7_lpi2c {
+		group0 {
+			pinmux = <FC7_P0_PIO3_8>,
+				<FC7_P1_PIO3_7>;
+			slew-rate = "fast";
+			drive-strength = "low";
+			input-enable;
+			bias-pull-up;
+			drive-open-drain;
+		};
+	};
+
+	pinmux_smartdma_camera: pinmux_smartdma_camera {
+		group0 {
+			pinmux = <N9X_MUX('3',0,7)>,
+				<N9X_MUX('3',1,7)>,
+				<N9X_MUX('3',2,7)>,
+				<N9X_MUX('3',3,7)>,
+				<N9X_MUX('3',4,7)>,
+				<N9X_MUX('3',5,7)>,
+				<N9X_MUX('1',10,7)>,
+				<N9X_MUX('1',11,7)>,
+				<PIO0_4>,
+				<PIO0_5>,
+				<PIO0_11>,
+				<CLKOUT_PIO2_2>,
+				<CLKOUT_PIO0_6>;
+			drive-strength = "low";
+			slew-rate = "fast";
+			input-enable;
+		};
+	};
+
+};
+#endif
+
+#if 0
+&video_sdma{
+	status="disabled";
+};
+#endif
+
 &sram0 {
 	/* Increase size of SRAM region */
 	reg = < 0x20000000 DT_SIZE_K(408) >;
