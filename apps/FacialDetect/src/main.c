@@ -157,10 +157,74 @@ static void option_handler(struct net_dhcpv4_option_callback *cb,
 		net_addr_ntop(AF_INET, cb->data, buf, sizeof(buf)));
 }
 
+
+#include "iotcl.h"
+#include "iotcl_util.h"
+#include "iotcl_telemetry.h"
+
+
+static void my_transport_send(const char *topic, size_t topic_len, const char *json_str) {
+    // example mqtt hook:
+    // mqtt_client_send(topic, topic_len, json_str, strlen(json_str)); 
+}
+
+static void iotcl_telemetry_example_entry(void) {
+	printk("IOTC ENTER\r\n");
+
+    IotclClientConfig config;
+    iotcl_init_client_config(&config);
+    config.device.instance_type = IOTCL_DCT_AWS_DEDICATED;
+    config.device.duid = "mydevice";
+    config.mqtt_send_cb = my_transport_send;
+    iotcl_init(&config);
+    
+    // mqtt_client_connect(...); // connect using your client
+    
+    // subscribe to the C2D topic:
+    IotclDeviceConfig *c = iotcl_mqtt_get_config();
+
+    // subscribe to the topic using your mqtt client. In this example, the subscribing mechanism
+    // is a callback function which will be called when the MQTT client receives data.
+    // mqtt_client_subscribe(c->sub_c2d, on_mqtt_client_topic_data);
+    
+    // while (mqtt_client_is_connected()) {
+    //     // In this example we are using an mqtt client that needs periodic polling.
+    //     // polling will trigger the configured on_mqtt_client_topic_data() callback.
+    //     mqtt_client_loop_and_poll();
+        
+    //     IotclMessageHandle msg = iotcl_telemetry_create();
+    //     if (!msg) {
+    //         // ran out of memory, but the library will print the error
+    //         // Add application-level handling here
+    //         return;        
+    //     }
+
+    //     // if (somesensor_is_ready()) {
+    //         iotcl_telemetry_set_string(msg, "status", "Ready");
+        
+    //         // DECIMAL, INTEGER and similar types:
+    //         iotcl_telemetry_set_number(msg, "temperature", 1);
+            
+    //         // Setting OBJECT type values for "accelerometer" object with numeric values
+    //         iotcl_telemetry_set_number(msg, "accelerometer.x", 1);
+    //         iotcl_telemetry_set_number(msg, "accelerometer.y", 1);
+    //         iotcl_telemetry_set_number(msg, "accelerometer.z", 1);
+    //     // } else {
+    //     //     iotcl_telemetry_set_string(msg, "status", "Starting");
+        
+    //     //     // You can set null to indicate that the value not available so graphs will show a gap
+    //     //     iotcl_telemetry_set_null(msg, "temperature", 1);
+    //     // }
+
+    //     k_msleep(1000);
+    // }
+    
+    iotcl_deinit();
+}
+
+
 int main(void)
 {
-
-
 	LOG_INF("Run dhcpv4 client");
 
 	net_mgmt_init_event_callback(&mgmt_cb, handler,
@@ -177,6 +241,8 @@ int main(void)
 
 	printk("Zephyr Facial Detection Demo\r\n");
 	printk("Model: %s\r\n", MODEL_GetModelName());
+
+	iotcl_telemetry_example_entry();
 
 	struct video_buffer *buffers[CONFIG_VIDEO_BUFFER_POOL_NUM_MAX], *vbuf;
 	struct display_buffer_descriptor buf_desc;
@@ -376,3 +442,4 @@ int main(void)
 		}
 	}
 }
+
