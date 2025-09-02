@@ -68,6 +68,16 @@ zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/font)
 list(APPEND app_sources src/display.c)
 list(APPEND app_sources src/convert.c)
 
+# # Add iotc-c-lib
+zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../iotc-c-lib/core/include)
+FILE(GLOB iotc_sources ${CMAKE_CURRENT_SOURCE_DIR}/../../../iotc-c-lib/core/src/*.c)
+list(APPEND app_sources ${iotc_sources})
+
+zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../iotc-c-lib/lib/cJSON/)
+list(APPEND cjson_sources ${CMAKE_CURRENT_SOURCE_DIR}/../../../iotc-c-lib/lib/cJSON/cJSON.c)
+list(APPEND app_sources ${cjson_sources})
+
+
 target_compile_definitions(app PRIVATE TF_LITE_STATIC_MEMORY)
 target_compile_options(app PRIVATE -Wno-psabi)
 target_sources(app PRIVATE ${app_sources})
