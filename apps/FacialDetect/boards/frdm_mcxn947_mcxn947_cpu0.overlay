@@ -17,6 +17,24 @@
 	};
 };
 
+/*
+	[VLAD] change required only on out network.
+	changing mac form randomised one to preset.
+*/
+/delete-node/ &enet_mac;
+&enet {
+	enet_mac {
+		compatible = "nxp,enet-qos-mac";
+		status = "okay";
+		interrupts = < 0x8b 0x0 >, < 0x8c 0x0 >, < 0x8d 0x0 >;
+		interrupt-names = "mac", "power", "lpi";
+		phy-connection-type = "rmii";
+		local-mac-address = [ae 9a 22 4a cb 15];
+		phy-handle = < &phy >;
+	};
+};
+
+
 #if 1
 
 /* Moved SJ16 and SJ26 jumpers from default connection, soldered wire to P1_4 to left side of R58 resistor */
